@@ -21,7 +21,8 @@ for (var i = 0; i < 10000000000000 ;  i++) {
             }
         }
         numerals = numerals + j;
-        if (eval(numerals) > upTo / probability && 1) {
+        currentResult = eval(numerals);
+        if ( ( currentResult > upTo / probability || currentResult < -(upTo / probability )) && 1) {
             break
         }
     }
