@@ -25,6 +25,22 @@ function readResults() {
         })
 }
 
+function insertRandomBrackets(numerals) {
+    var first = Math.ceil(Math.random() * 8); //No brackerets after last value
+    var second = Math.ceil(Math.random() * (9 - first)); //must be after first
+
+    index = numerals.indexOf(first);
+    if (numerals.charAt(index-1) != parseInt(numerals.charAt(index-1))) {
+        var numerals1 = numerals.substr(0, index) + '('+ numerals.substr(index);
+
+        index = numerals1.indexOf(second  + first);
+            if (numerals1.charAt(index+1) != parseInt(numerals1.charAt(index+1))) {
+                numerals = numerals1.substr(0, index + 1) + ')' + numerals1.substr(index + 1);
+            }
+    }
+    return numerals;
+}
+
 //var results = [];
 var results = JSON.parse(readResults());
 var hrTime  = process.hrtime();
@@ -37,7 +53,7 @@ var probabilities = [0, .16, .33, .5, .66, .83, 1];
 var numerals = '';
 var count = 0;
 
-for (var i = 0; i < 10000000 ;  i++) {
+for (var i = 0; i < 100000000 ;  i++) {
     numerals = '1';
     for (var j = 2; j < 10; j++) {
         operatorsRandom = Math.random();
@@ -49,15 +65,20 @@ for (var i = 0; i < 10000000 ;  i++) {
         }
         numerals = numerals + j;
         currentResult = eval(numerals);
-        if ( ( currentResult > upTo / probability || currentResult < -(upTo / probability )) && 1) {
+        if ( ( currentResult > upTo / probability || currentResult < -(upTo / probability )) && 1) { //If the number is to large or small, we probably won't find an answer
             break
         }
     }
-    var number = eval(numerals);
-    if (number > 0 && number < upTo && !results[number] && (number === parseInt(number))) {  //If the number is to large, we probably won't find an answer
-        results[number] = number + ' = ' + numerals;
-        count++;
-        //console.log(results[number] + ' count: ' + count);
+    if (j == 10) {
+        bracketNumber = Math.random() * 100;
+
+        numerals = insertRandomBrackets(numerals);
+        var number = eval(numerals);
+        if (number > 0 && number < upTo && !results[number] && (number === parseInt(number))) {
+            results[number] = number + ' = ' + numerals;
+            count++;
+            //console.log(results[number] + ' count: ' + count);
+        }
     }
 }
 
