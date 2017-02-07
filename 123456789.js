@@ -53,7 +53,7 @@ var probabilities = [0, .16, .33, .5, .66, .83, 1];
 var numerals = '';
 var count = 0;
 
-for (var i = 0; i < 100000000 ;  i++) {
+for (var i = 0; i < 200000000 ;  i++) {
     numerals = '1';
     for (var j = 2; j < 10; j++) {
         operatorsRandom = Math.random();
@@ -70,9 +70,10 @@ for (var i = 0; i < 100000000 ;  i++) {
         }
     }
     if (j == 10) {
-        bracketNumber = Math.random() * 100;
-
-        numerals = insertRandomBrackets(numerals);
+        bracketNumber = Math.floor(Math.random() * 6);
+        for (k = 0; k < bracketNumber; k++){
+            numerals = insertRandomBrackets(numerals);
+        }
         var number = eval(numerals);
         if (number > 0 && number < upTo && !results[number] && (number === parseInt(number))) {
             results[number] = number + ' = ' + numerals;
